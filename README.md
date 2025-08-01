@@ -104,9 +104,10 @@ The extension consists of:
 
 ## Version
 
-Current version: **1.2.2**
+Current version: **1.3**
 
 ### Recent Updates
+- **v1.3**: Made W larger and positioned at bottom - increased font sizes significantly and moved to y=90%
 - **v1.2.2**: Further adjusted W positioning - moved to y=70% for optimal centering in PNG output
 - **v1.2.1**: Fixed W positioning in PNG icons - moved from y=50% to y=60% for better centering
 - **v1.2**: Made icon "W" taller and more prominent with increased font sizes
