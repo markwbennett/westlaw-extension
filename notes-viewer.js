@@ -126,6 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Paste from clipboard
     async function pasteFromClipboard() {
+        showStatus('Reading clipboard...', 'success');
         try {
             const text = await navigator.clipboard.readText();
             if (text.trim()) {
@@ -183,6 +184,14 @@ document.addEventListener('DOMContentLoaded', function() {
     chrome.storage.onChanged.addListener(function(changes, namespace) {
         if (namespace === 'local' && changes.westlawNotes) {
             loadNotes();
+        }
+    });
+    
+    // Listen for refresh messages from background script
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+        if (request.action === 'refreshNotes') {
+            loadNotes();
+            showStatus('Notes refreshed', 'success');
         }
     });
     

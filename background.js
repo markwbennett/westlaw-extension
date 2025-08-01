@@ -22,15 +22,28 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             const existingTab = tabs.find(tab => tab.url === notesUrl);
             
             if (existingTab) {
-                // Switch to existing tab
+                // Switch to existing tab and trigger refresh
                 chrome.tabs.update(existingTab.id, {active: true});
                 chrome.windows.update(existingTab.windowId, {focused: true});
+                // Send message to refresh the notes
+                chrome.tabs.sendMessage(existingTab.id, {action: 'refreshNotes'});
             } else {
                 // Open new tab
                 chrome.tabs.create({
                     url: notesUrl
                 });
             }
+        });
+    } else if (request.action === 'notesUpdated') {
+        // Broadcast to all notes viewer tabs to refresh
+        const notesUrl = chrome.runtime.getURL('notes-viewer.html');
+        
+        chrome.tabs.query({}, function(tabs) {
+            tabs.forEach(tab => {
+                if (tab.url === notesUrl) {
+                    chrome.tabs.sendMessage(tab.id, {action: 'refreshNotes'});
+                }
+            });
         });
     }
 }); 

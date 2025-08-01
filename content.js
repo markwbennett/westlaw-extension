@@ -846,11 +846,12 @@
     }
 
          async function readClipboardWithRetries() {
-         const maxRetries = 3;
-         const initialDelay = 800; // Wait longer initially for copy operation
-         const retryDelay = 300; // Shorter retry intervals
+         const maxRetries = 5; // Increased retries
+         const initialDelay = 1000; // Wait longer initially for copy operation
+         const retryDelay = 400; // Slightly longer retry intervals
 
          // Wait initial delay for copy operation to complete
+         showNotification('Reading clipboard...', 'navigation');
          await new Promise(resolve => setTimeout(resolve, initialDelay));
 
          for (let i = 0; i < maxRetries; i++) {
@@ -876,30 +877,39 @@
                              
                              chrome.storage.local.set({ westlawNotes: notes }, function() {
                                  showNotification('Quotation saved to notes', 'navigation');
-                                 // Small delay to ensure storage operation is fully committed
+                                 // Longer delay and message broadcast to ensure reliability
                                  setTimeout(() => {
+                                     chrome.runtime.sendMessage({action: 'notesUpdated'});
                                      openNotesViewer();
-                                 }, 100);
+                                 }, 300);
                              });
                          });
                          return; // Exit if successful
                      }
                  }
                  
-                 // If we reach here, clipboard was empty or had no valid content
-                 if (i === maxRetries - 1) {
-                     showNotification('Clipboard is empty or contains no valid content', 'navigation');
-                 }
+                                 // If we reach here, clipboard was empty or had no valid content
+                if (i === maxRetries - 1) {
+                    showNotification('Clipboard empty - opening notes viewer for manual paste', 'navigation');
+                    // Still open notes viewer so user can paste manually
+                    setTimeout(() => {
+                        openNotesViewer();
+                    }, 500);
+                }
              } catch (err) {
                  console.error(`Clipboard read attempt ${i + 1} failed:`, err);
                  
                  if (err.name === 'NotAllowedError') {
                      showNotification('Clipboard access denied. Please allow clipboard permissions.', 'navigation');
                      return;
-                 } else if (i === maxRetries - 1) {
-                     // Only show error on final attempt
-                     showNotification(`Failed to read clipboard: ${err.message}`, 'navigation');
-                 }
+                                 } else if (i === maxRetries - 1) {
+                    // Only show error on final attempt
+                    showNotification('Failed to read clipboard - opening notes for manual paste', 'navigation');
+                    // Still open notes viewer so user can paste manually
+                    setTimeout(() => {
+                        openNotesViewer();
+                    }, 500);
+                }
              }
              
              // Wait before retry (except on last iteration)
@@ -932,10 +942,11 @@
                          
                          chrome.storage.local.set({ westlawNotes: notes }, function() {
                              showNotification('Quotation saved to notes', 'navigation');
-                             // Small delay to ensure storage operation is fully committed
+                             // Longer delay and message broadcast to ensure reliability
                              setTimeout(() => {
+                                 chrome.runtime.sendMessage({action: 'notesUpdated'});
                                  openNotesViewer();
-                             }, 100);
+                             }, 300);
                          });
                      });
                  } else {
