@@ -1,6 +1,6 @@
 # Westlaw Combined Enhancements - Chrome Extension
 
-A Chrome extension that enhances the Westlaw reading experience with customizable typography, layout controls, and navigation shortcuts.
+A Chrome extension that enhances the Westlaw experience with customizable typography, layout controls, and navigation shortcuts.
 
 ## Quick Installation
 
