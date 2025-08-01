@@ -104,9 +104,10 @@ The extension consists of:
 
 ## Version
 
-Current version: **1.2**
+Current version: **1.2.1**
 
 ### Recent Updates
+- **v1.2.1**: Fixed W positioning in PNG icons - moved from y=50% to y=60% for better centering
 - **v1.2**: Made icon "W" taller and more prominent with increased font sizes
 - **v1.1**: Improved copy/paste reliability with better timing, fallback mechanisms, and enhanced user feedback
 - **v1.0**: Initial release with full typography controls, layout adjustments, and copy/notes functionality
