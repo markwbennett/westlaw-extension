@@ -104,9 +104,10 @@ The extension consists of:
 
 ## Version
 
-Current version: **1.1**
+Current version: **1.2**
 
 ### Recent Updates
+- **v1.2**: Made icon "W" taller and more prominent with increased font sizes
 - **v1.1**: Improved copy/paste reliability with better timing, fallback mechanisms, and enhanced user feedback
 - **v1.0**: Initial release with full typography controls, layout adjustments, and copy/notes functionality
 
