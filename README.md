@@ -32,7 +32,7 @@ Click the extension icon (orange square with blue "W") in your toolbar while on 
 - **Move Left/Right**: Shift content left or right independently
 - **Toggle Sidebar**: Hide/show right sidebar
 - **Toggle Focus Mode**: Hide header/footer elements
-- **Copy & Notes**: Copy document with reference and download notes file
+- **Copy & Notes**: Copy document with reference to notes file
 - **Navigation**: Next/Previous search terms, scroll to top
 
 ### Smart Page Detection
