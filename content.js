@@ -998,6 +998,16 @@
             div[class*="concur"] {
                 background-color: rgba(255, 255, 0, 0.1) !important; /* light yellow */
             }
+
+            /* Light grey for attorney block sections */
+            .co_attorneyBlock {
+                background-color: rgba(128, 128, 128, 0.1) !important; /* light grey */
+            }
+
+            /* Grey for brief it state sections */
+            .co_briefItState {
+                background-color: rgba(128, 128, 128, 0.15) !important; /* grey */
+            }
         `;
 
         opinionStyleElement.textContent = colorRules;

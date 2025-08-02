@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const emptyState = document.getElementById('emptyState');
     const editBtn = document.getElementById('editBtn');
     const saveBtn = document.getElementById('saveBtn');
+    const resetBtn = document.getElementById('resetBtn');
     const pasteBtn = document.getElementById('pasteBtn');
     const exportBtn = document.getElementById('exportBtn');
     const clearBtn = document.getElementById('clearBtn');
@@ -21,10 +22,30 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Load and display notes
     function loadNotes() {
-        chrome.storage.local.get(['westlawNotes'], function(result) {
+        chrome.storage.local.get(['westlawNotes', 'westlawNotesEditedHTML', 'westlawNotesLastEdited'], function(result) {
             const notes = result.westlawNotes || [];
-            displayNotes(notes);
+            const editedHTML = result.westlawNotesEditedHTML;
+            const lastEdited = result.westlawNotesLastEdited;
+            
+            // If we have edited HTML content, use it instead of generating from notes
+            if (editedHTML && lastEdited) {
+                displayEditedNotes(editedHTML);
+            } else {
+                displayNotes(notes);
+            }
         });
+    }
+    
+    // Display edited HTML content
+    function displayEditedNotes(htmlContent) {
+        if (!htmlContent.trim()) {
+            emptyState.style.display = 'block';
+            notesContent.style.display = 'none';
+        } else {
+            emptyState.style.display = 'none';
+            notesContent.style.display = 'block';
+            notesContent.innerHTML = htmlContent;
+        }
     }
     
     // Display notes in the viewer
@@ -79,10 +100,22 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Save edited content
     function saveChanges() {
-        // For now, just show a message that manual editing saves the HTML structure
-        // In a full implementation, you might want to parse the HTML back to structured data
-        showStatus('Changes saved! Note: Manual edits are preserved as-is.', 'success');
-        toggleEditMode();
+        try {
+            // Get the edited HTML content
+            const editedContent = notesContent.innerHTML;
+            
+            // Store the edited HTML content in a separate storage key
+            chrome.storage.local.set({ 
+                westlawNotesEditedHTML: editedContent,
+                westlawNotesLastEdited: new Date().toISOString()
+            }, function() {
+                showStatus('Changes saved successfully!', 'success');
+                toggleEditMode();
+            });
+        } catch (error) {
+            console.error('Error saving edited notes:', error);
+            showStatus('Error saving changes. Please try again.', 'error');
+        }
     }
     
     // Export notes as text file
@@ -173,9 +206,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    // Reset to original structured notes
+    function resetToOriginal() {
+        if (confirm('Are you sure you want to reset to the original structured notes? This will lose any manual edits.')) {
+            chrome.storage.local.remove(['westlawNotesEditedHTML', 'westlawNotesLastEdited'], function() {
+                loadNotes();
+                showStatus('Reset to original notes successfully!', 'success');
+            });
+        }
+    }
+
     // Event listeners
     editBtn.addEventListener('click', toggleEditMode);
     saveBtn.addEventListener('click', saveChanges);
+    resetBtn.addEventListener('click', resetToOriginal);
     pasteBtn.addEventListener('click', pasteFromClipboard);
     exportBtn.addEventListener('click', exportNotes);
     clearBtn.addEventListener('click', clearAllNotes);

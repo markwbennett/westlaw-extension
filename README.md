@@ -104,9 +104,10 @@ The extension consists of:
 
 ## Version
 
-Current version: **1.3.1**
+Current version: **1.4**
 
 ### Recent Updates
+- **v1.4**: Enhanced notes system, content highlighting, and UI improvements
 - **v1.3.1**: Refined icon design - Comic Sans font, optimized size, positioned at y=85%
 - **v1.3**: Made W larger and positioned at bottom - increased font sizes significantly and moved to y=90%
 - **v1.2.2**: Further adjusted W positioning - moved to y=70% for optimal centering in PNG output
