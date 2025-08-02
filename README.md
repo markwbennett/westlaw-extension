@@ -80,14 +80,6 @@ Navigation shortcuts work when not typing in input fields:
 - Automatically applies settings to dynamically loaded content
 - Works with all Westlaw document types and interfaces
 
-## Advantages Over Userscript
-
-- **No Userscript Manager Required**: Works directly in Chrome
-- **Better Integration**: Native Chrome extension popup interface
-- **Easier Distribution**: Can be packaged and shared as `.crx` file
-- **More Reliable**: Uses Chrome's native storage and messaging APIs
-- **Better Security**: Chrome's extension security model
-
 ## Compatibility
 
 - **Browser**: Chrome (Manifest V3)
